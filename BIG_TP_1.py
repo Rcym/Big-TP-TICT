@@ -1,28 +1,38 @@
 import math
 print("===========================\nBienvenue dans le BIG TP1\n\n")
 
-# Lecture des la source 1
+# Pour étre rapide
+Proba_1 = [10, 20, 30, 20, 20]
+N = len(Proba_1)
 Source_1 = []
-Proba_1 = []
-N = int(input ("Entrer le nombre de symboles de la source 1 : "))
+for i in range(0, N):
+    Source_1.append("x" + str(i+1))
 
-print("\nsymboles source 1 : ")
-firstTime = True
-sommeProba = 0
-while sommeProba != 100:
-    if  firstTime:
-        firstTime = False
-    else:
-        print("\nLa somme des probabilités doit être égale à 100%\nSymboles source 1 : ")
-    sommeProba = 0
+
+
+# Lecture des la source 1
+if N == 0 :
     Source_1 = []
     Proba_1 = []
-    for i in range(0, N):
-        symb = "x" + str(i+1)
-        toAdd = int(input(symb + " : "))
-        Proba_1.append(toAdd)
-        Source_1.append(symb)
-        sommeProba += toAdd
+    N = int(input ("Entrer le nombre de symboles de la source 1 : "))
+
+    print("\nsymboles source 1 : ")
+    firstTime = True
+    sommeProba = 0
+    while sommeProba != 100:
+        if  firstTime:
+            firstTime = False
+        else:
+            print("\nLa somme des probabilités doit être égale à 100%\nSymboles source 1 : ")
+        sommeProba = 0
+        Source_1 = []
+        Proba_1 = []
+        for i in range(0, N):
+            symb = "x" + str(i+1)
+            toAdd = int(input(symb + " : "))
+            Proba_1.append(toAdd)
+            Source_1.append(symb)
+            sommeProba += toAdd
 
 
 # Calcule de la quantité d'information de chaque symbole
