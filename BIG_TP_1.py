@@ -2,7 +2,8 @@ import math
 print("===========================\nBienvenue dans le BIG TP1\n\n")
 
 
-Proba_x = [10, 20, 70]           # Source X
+#Proba_x = [10, 20, 70]           # Source X
+Proba_x = [30, 70]
 N = len(Proba_x)
 Source_1 = []
 print("Source 1 :")
@@ -10,7 +11,8 @@ for i in range(0, N):
     Source_1.append("x" + str(i+1))
     print(Source_1[i] + "(" + str(i+1) + ") = " + str(Proba_x[i]) + " %")
 
-Proba_y = [10, 90]               # Source Y
+#Proba_y = [10, 90]               # Source Y
+Proba_y = [40, 60]
 N2 = len(Proba_y)
 Source_2 = []
 print("\nSource 2 :")
@@ -18,17 +20,18 @@ for i in range(0, N2):
     Source_2.append("y" + str(i+1))
     print(Source_2[i] + "(" + str(i+1) + ") = " + str(Proba_y[i]) + " %")
 
-Proba_xy = [[10, 20], [30, 20], [10, 10]]   # Source XY
+Proba_xy = []   # Source XY
 Nxy = len(Proba_xy)
 sommePxy = 0
 # affichage de la probabilité conjointe
-print("\nLa probabilité conjointe P(x,y) : ")
-for i in range(0, N):
-    for j in range(0, N2):
-        symb = "(x" + str(i+1) + ",y" + str(j+1) + ')'
-        print("P" + symb + " = " + str(Proba_xy[i][j]) + " %")
-        sommePxy += Proba_xy[i][j]
-print("somme = " + str(sommePxy) + " %")
+if Nxy != 0:
+    print("\nLa probabilité conjointe P(x,y) : ")
+    for i in range(0, N):
+        for j in range(0, N2):
+            symb = "(x" + str(i+1) + ",y" + str(j+1) + ')'
+            print("P" + symb + " = " + str(Proba_xy[i][j]) + " %")
+            sommePxy += Proba_xy[i][j]
+    print("somme = " + str(sommePxy) + " %")
 
 
 
@@ -65,8 +68,26 @@ def QuantitéInfoMutuelle(Proba1, Proba2):
             Ixy[i].append(round(-math.log2((Proba1[i]/100)*(Proba2[j]/100)), 3))
     return I
 
+# Function pour calculer l'entropie conditionnelle
+def EntropieConditionnelle(PX, P_YSX, YXorXY):
+    if YXorXY == "YsX":
+        Hcond = 0
+        for i in range(0, len(PX)):
+            for j in range(0, len(P_YSX[i])):
+                Hcond += -(PX[i]/100) * (P_YSX[j][i]) * math.log2(P_YSX[j][i])
+        return round(Hcond, 3)
+    elif YXorXY == "XsY":
+        Hcond = 0
+        for i in range(0, len(PX)):
+            for j in range(0, len(P_YSX[i])):
+                Hcond += -(PX[i]/100) * (P_YSX[i][j]) * math.log2(P_YSX[i][j])
+        return round(Hcond, 3)
 
 print("\n\n===========================\n\n")
+
+
+
+
 
 
 
@@ -173,14 +194,16 @@ if Nxy == 0 :
         Proba_xy = []
         sommePxy = 0
         for i in range(0, N):
+            Proba_xyy = []
             for j in range(0, N2):
                 symb = "(x" + str(i+1) + ",y" + str(j+1) + ')'
                 pxyy = int(input("P" + symb + " : "))
-                Proba_xy.append(pxyy)
+                Proba_xyy.append(pxyy)
                 sommePxy += pxyy
+            Proba_xy.append(Proba_xyy)
 
 # Calcule et affichage de P(x) et P(y) a partire de P(x,y)
-print("On fait sortire les P(xi) et P(yj) a partire de P(xi,yj) :\nOn utilise la relation : P(xI) = Somme(P(xI,yj))\n")
+print("\nOn fait sortire les P(xi) et P(yj) a partire de P(xi,yj) :\nOn utilise la relation : P(xI) = Somme(P(xI,yj))\n")
 
 # Calcule de P(x)
 Proba_x = []
@@ -238,6 +261,46 @@ print("===> I(X,Y) = " + str(Ixy2) + " (bits/symbole)")
 
 
 
+print("\n\n===========================\n\n")
+
+
+
+
+## Calcule des probabilitées conditionnelles
+# Calcule de P(y/x)
+print("On calcule les probabilités conditionnelles P(y/x) :\nOn utilise la formule de Bayes : P(y/x) = P(x,y) / P(x)\n")
+Proba_YsX = []
+for i in range(0, N):
+    Pysx_In = []
+    for j in range(0, N2):
+        Inside = Proba_xy[i][j] / Proba_x[i]
+        Inside = round(Inside, 3)
+        Pysx_In.append(Inside)
+    Proba_YsX.append(Pysx_In)
+
+# Affichage de P(y/x)
+for i in range(0, N):
+    for j in range(0, N2):
+        print("P(y" + str(j+1) + "/x" + str(i+1) + ") : " + str(Proba_YsX[i][j]))
+
+print("\n")
+
+# Calcule de P(x/y)
+print("On calcule les probabilités conditionnelles P(x/y) :\nOn utilise la formule de Bayes : P(x/y) = P(x,y) / P(y)\n")
+Proba_XsY = []
+for i in range(0, N):
+    Pxsy_In = []
+    for j in range(0, N2):
+        Inside = Proba_xy[i][j] / Proba_y[j]
+        Inside = round(Inside, 3)
+        Pxsy_In.append(Inside)
+    Proba_XsY.append(Pxsy_In)
+
+# Affichage de P(x/y)
+for i in range(0, N):
+    for j in range(0, N2):
+        print("P(x" + str(i+1) + "/y" + str(j+1) + ") : " + str(Proba_XsY[i][j]))
+
 
 
 
@@ -245,8 +308,15 @@ print("\n\n===========================\n\n")
 
 
 
+## Calcule des entropies conditionnelles
+# Calcule de H(y/x)
+print("On calcule les entropies conditionnelles H(y/x) :\nOn utilise la formule : H(y/x) = somme(Px * somme(P(y/x) * log2(P(y/x))))\n")
+H_YsX = EntropieConditionnelle(Proba_x, Proba_YsX, "YsX")
+H_XsY = EntropieConditionnelle(Proba_y, Proba_XsY, "XsY")
+print("===> H(Y/X) = " + str(H_YsX) + " (bits/symbole)")
+print("===> H(X/Y) = " + str(H_XsY) + " (bits/symbole)")
 
-## Calcule des probabilitées conditionnelles
-# Calcule de P(y|x)
-print("On calcule les probabilités conditionnelles P(y|x) :\nOn utilise la formule de Bayes : P(y|x) = P(x,y) / P(x)\n")
-Proba_YsX = []
+print("\nOn peut vérifier ces résultats en utilisant l'autre formule :")
+print("H(Y/X) = H(X,Y) - H(X) => H(Y/X)\nH(Y/X) = " + str(Hxy) + " - " + str(Hx) + "\nH(Y/X) = " + str(round((Hxy - Hx), 3)) + " (bits/symbole)\n")
+print("H(X/Y) = H(X,Y) - H(Y) => H(X/Y)\nH(X/Y) = " + str(Hxy) + " - " + str(Hy) + "\nH(X/Y) = " + str(round((Hxy - Hy), 3)) + " (bits/symbole)")
+
