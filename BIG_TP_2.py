@@ -16,7 +16,7 @@ while (sommeProba != 100):
     sommeProba = 0
     for i in range(0,N):
         symb = "x" + str(i+1)
-        toAdd = int(input(symb + " : "))
+        toAdd = float(input(symb + " : "))
         sommeProba += toAdd
         Source.append(toAdd)
         Symb.append(symb)
@@ -84,8 +84,8 @@ for i in range(0,N):
 # Calcul de la longueur moyenne
 LongeurMoyenne = 0
 for i in range(0,N):
-    LongeurMoyenne += len(Result[i][1])
-LongeurMoyenne /= N
+    LongeurMoyenne += Source[i]/100 * len(Result[i][1])
+    LongeurMoyenne = round((LongeurMoyenne),2)
 print("\nLa longueur moyenne est de : " + str(LongeurMoyenne) + " bits")
 
 # Calcule de l'entropie de la source
@@ -93,11 +93,12 @@ import math
 Entropie = 0
 for i in range(0,N):
     Entropie += Source[i]/100 * math.log2(100/Source[i])
-print("\nL'entropie de la source est de : " + str(Entropie) + " bits")
+    Entropie = round((Entropie),2)
+print("L'entropie de la source est de : " + str(Entropie) + " bits/symboles")
 
 # Calcule de l'efficacité du codage
-Efficacite = Entropie/LongeurMoyenne
-print("\nL'efficacité du codage est de : " + str(Efficacite))
+Efficacite = round((Entropie/LongeurMoyenne *100), 2)
+print("\nL'efficacité du codage est de : " + str(Efficacite)+ " %\n\n")
 
 
-    
+print(Data)
