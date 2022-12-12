@@ -101,4 +101,47 @@ Efficacite = round((Entropie/LongeurMoyenne *100), 2)
 print("\nL'efficacité du codage est de : " + str(Efficacite)+ " %\n\n")
 
 
-print(Data)
+
+
+
+
+
+
+# Shano - Fano
+print("\n\n\n=======================================\nLe codage en utilisant l'algorithm Shano-Fannon\n")
+
+Source.sort(reverse=True)
+
+def sommeRange(Tab, startIndex, endIndex):
+    sommeRanged = 0
+    for i in range(startIndex, endIndex):
+        sommeRanged += Tab[i]
+    return sommeRanged
+
+def addCode(Tab, startIndex, endIndex, code):
+    for i in range(startIndex, endIndex):
+        Tab[i] += code
+
+print(Source)
+ShanoFanon = []
+for i in range(0,len(Source)):
+    ShanoFanon.append("")
+
+
+
+
+# Trouver les differentes difference
+for ligne in range(0,len(Source)):
+    
+
+
+
+
+
+    print(Source)
+    print("\n")
+
+print("\n")
+print(ShanoFanon)
+
+    
