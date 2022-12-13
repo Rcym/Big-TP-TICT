@@ -48,7 +48,7 @@ while (len(Data) != 1):
     bas = Data[-1]
     ProbaHaut = haut[1]
     ProbaBas = bas[1]
-    newProba = ProbaHaut + ProbaBas
+    newProba = ProbaHaut + ProbaBas + i*0.001 # pour qu'il soit tjr en haut des probas égales
 
     # Crating new symbol
     newSymb = ["", newProba, bas, haut]
@@ -56,6 +56,7 @@ while (len(Data) != 1):
     Data.pop()
     Data.pop()
     Data.append(newSymb)
+
     Data.sort(key=lambda x: x[1], reverse=True)
 
 
