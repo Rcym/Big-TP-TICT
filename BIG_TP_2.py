@@ -129,7 +129,6 @@ for i in range(0,len(Source)):
 
 
 
-
 # Trouver les differentes difference
 for ligne in range(0,len(Source)):
     
