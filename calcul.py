@@ -10,9 +10,9 @@ titre = Label(root, text="Application calculatrice", font=("Arial", 24), padx=20
 titre.grid(row=0, column=0, columnspan=4)
 titre.configure(bg="#444", fg="#fff")
 
-current = [,,,]
+#current = [,,,]
 
-def addNum(num):
+#def addNum(num):
 
 
 
