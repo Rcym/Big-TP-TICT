@@ -12,7 +12,7 @@ def Entropie(Proba):
 def QuantitéInformation(Proba):
     I = []
     for i in range(0, len(Proba)):
-        I.append(round(-math.log2(Proba[i]/100), 3))
+        I.append(round(-math.log2(Proba[i]), 3))
     return I
 
 def EntropieConjointe(Proba_xy):
@@ -72,7 +72,7 @@ def QinformationMutuelle(Pxy, Px, Py):
     Ixy2 = 0
     for i in range(0, len(Px)):
         for j in range(0, len(Py)):
-            Ixy2 += (Pxy[i][j]/100) * math.log2((Pxy[i][j]/100)/((Px[i]/100)*(Py[j]/100)))
+            Ixy2 += (Pxy[i][j]) * math.log2((Pxy[i][j])/((Px[i])*(Py[j])))
     return round(Ixy2, 3)
 
 def erreurPopup(currentWindow):
@@ -585,8 +585,8 @@ def show_BIG_TP1():
                 PxPyContainer = Frame(generalMainFrame, bg="#333")
                 PxPyContainer.pack(fill=X, padx=10)
                 Label(PxPyContainer, text="Quantité d'information des sources X et Y :", font=("Arial",16), bg="#333", fg="#fff").grid(row=0, column=0, sticky=W)
-                Button(PxPyContainer, text="I(xi)", bg="#333", fg="#fff", bd=3, padx=5, pady=5, font=("Arial",16), command=lambda: showQinfoo("Y")).grid(row=0, column=1, padx=5)
-                Button(PxPyContainer, text="I(yj)", bg="#333", fg="#fff", bd=3, padx=5, pady=5, font=("Arial",16), command=lambda: showQinfoo("X")).grid(row=0, column=2, padx=5)
+                Button(PxPyContainer, text="I(xi)", bg="#333", fg="#fff", bd=3, padx=5, pady=5, font=("Arial",16), command=lambda: showQinfoo("X")).grid(row=0, column=1, padx=5)
+                Button(PxPyContainer, text="I(yj)", bg="#333", fg="#fff", bd=3, padx=5, pady=5, font=("Arial",16), command=lambda: showQinfoo("Y")).grid(row=0, column=2, padx=5)
 
                 PxyContainer = Frame(generalMainFrame, bg="#333")
                 PxyContainer.pack(fill=X, padx=5, pady=40)
