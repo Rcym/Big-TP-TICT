@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+import tkinter as tk
 import math
 
 # Fonction pour calculer l'entropie d'une source
@@ -165,7 +166,7 @@ def showPrefix():
             Symb = Label(theFrame, text="X" + str(i+1) + " : ", font=("Arial", 12), pady=5)
             Symb.configure(bg="#222", fg="#fff")
             Symb.grid(row=i, column=0)
-
+            
             Code = Entry(theFrame, font=("Arial", 12), width=10)
             Code.grid(row=i, column=1)
 
@@ -197,12 +198,10 @@ def showPrefix():
                         errWindow.configure(bg="red")
                         Label(errWindow, text="les codes ne doivent contenire que des 0 et des 1").pack(padx=10, pady=10)
                         return
-
                 Codes.append(elem[1].get())
                 Probas.append(Proba)
-                sommeProba += Proba
-
-            if sommeProba != 1:
+                sommeProba += Proba*100
+            if sommeProba/100 != 1:
                 errWindow = Toplevel(prefixWindow)
                 errWindow.configure(bg="red")
                 Label(errWindow, text="La somme des probabilitées doit étre égale a 1").pack(padx=10, pady=10)
