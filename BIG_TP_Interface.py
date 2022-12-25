@@ -9,6 +9,12 @@ def Entropie(Proba):
         H += -Proba[i] * math.log2(Proba[i])
     return round(H, 3)
 
+def QuantitéInformation(Proba):
+    I = []
+    for i in range(0, len(Proba)):
+        I.append(round(-math.log2(Proba[i]/100), 3))
+    return I
+
 def EntropieConjointe(Proba_xy):
     Hxy = 0
     for i in range(0, len(Proba_xy)):
@@ -61,6 +67,13 @@ def ProbaCond(Pxy, Px, N1, N2, direction):
                 Pysx_In.append(Inside)
             Proba_YsX.append(Pysx_In)
         return Proba_YsX
+
+def QinformationMutuelle(Pxy, Px, Py):
+    Ixy2 = 0
+    for i in range(0, len(Px)):
+        for j in range(0, len(Py)):
+            Ixy2 += (Pxy[i][j]/100) * math.log2((Pxy[i][j]/100)/((Px[i]/100)*(Py[j]/100)))
+    return round(Ixy2, 3)
 
 def erreurPopup(currentWindow):
     errWindow = Toplevel(currentWindow)
@@ -385,11 +398,28 @@ def show_BIG_TP1():
         global Pysx
         global Hx
         global Hy
+        global Hxy
+        global Ixy
+        global Ixy_H
+        global Hysx
+        global Hxsy
+        global Ix
+        global Iy
 
         Pysx = ProbaCond(Pxy, Px, tailleSource_1, tailleSource_2, "ysx")
         Pxsy = ProbaCond(Pxy, Py, tailleSource_1, tailleSource_2, "xsy")
         Hx = Entropie(Px)
         Hy = Entropie(Py)
+        Hxy = EntropieConjointe(Pxy)
+        Hysx = EntropieConditionnelle(Px, Pysx, "YsX")
+        Hxsy = EntropieConditionnelle(Py, Pxsy, "XsY")
+
+        Ixy_H = round((Hx + Hy - Hxy), 3)
+        Ixy = QinformationMutuelle(Pxy, Px, Py)
+
+        Ix = QuantitéInformation(Px)
+        Iy = QuantitéInformation(Py)
+        
 
         # Creating Display Window TP1
         entryWindow.destroy()
@@ -509,6 +539,74 @@ def show_BIG_TP1():
                 Qinfo_btn.configure(bg="#fff", fg="#333")
                 Proba_btn.configure(bg="#333", fg="#fff")
                 Entropie_btn.configure(bg="#333", fg="#fff")
+
+                def showQinfoo(Source):
+                    QinfoWindoww = Toplevel(displayWindow)
+                    QinfoWindoww.title("I("+ Source +")")
+                    QinfoWindoww.geometry("200x500")
+                    QinfoWindoww.resizable(False,False)
+                    QinfoWindoww.configure(bg="#333")
+
+                    ################################### scroll bar section
+                    IxIyWrapper = LabelFrame(QinfoWindoww, height=400)
+                    IxIyWrapper.configure(bg="#333")
+                    IxIyWrapper.pack(fill="y", expand="no", pady=20)
+
+                    theCanvas = Canvas(IxIyWrapper)
+                    theCanvas.configure(bg="#222")
+                    theCanvas.pack(side=LEFT)
+
+                    yscrollbar = ttk.Scrollbar(IxIyWrapper, orient=VERTICAL, command=theCanvas.yview)
+                    yscrollbar.pack(side=RIGHT, fill=Y)
+
+                    theCanvas.configure(yscrollcommand=yscrollbar.set)
+                    theCanvas.bind("<Configure>", lambda e: theCanvas.configure(scrollregion=theCanvas.bbox("all")))
+                    theCanvas.bind_all("<MouseWheel>", lambda event: theCanvas.yview_scroll(int(-1*(event.delta/120)), "units"))
+
+                    IxIyframe = Frame(theCanvas)
+                    IxIyframe.configure(bg="#222")
+                    theCanvas.create_window((0,0), window=IxIyframe, anchor="nw")
+                    theCanvas.configure(width=600,height=400 , bg="#222")
+                    ################################### end of scroll bar section
+
+                    if Source == "X":
+                        tailleSource = tailleSource_1
+                        symbToUse = "x"
+                        I = Ix
+                    else:
+                        tailleSource = tailleSource_2
+                        symbToUse = "y"
+                        I = Iy
+                    
+                    for i in range(tailleSource):
+                        Label(IxIyframe, text="I(" + symbToUse + str(i) + ") = " + str(I[i]), font=("Arial", 18), bg="#222", fg="#fff").grid(row=i, column=0, pady=5, padx=20)
+
+                Label(generalMainFrame, text="Calcule de la quantité d'information :", font=("Arial 22 bold underline"), bg="#333", fg="#fff", justify=LEFT).pack(fill=X,padx=10, pady=10)
+                PxPyContainer = Frame(generalMainFrame, bg="#333")
+                PxPyContainer.pack(fill=X, padx=10)
+                Label(PxPyContainer, text="Quantité d'information des sources X et Y :", font=("Arial",16), bg="#333", fg="#fff").grid(row=0, column=0, sticky=W)
+                Button(PxPyContainer, text="I(xi)", bg="#333", fg="#fff", bd=3, padx=5, pady=5, font=("Arial",16), command=showQinfoo("xi")).grid(row=0, column=1, padx=5)
+                Button(PxPyContainer, text="I(yj)", bg="#333", fg="#fff", bd=3, padx=5, pady=5, font=("Arial",16), command=showQinfoo("Yj")).grid(row=0, column=2, padx=5)
+
+                PxyContainer = Frame(generalMainFrame, bg="#333")
+                PxyContainer.pack(fill=X, padx=5, pady=40)
+                Label(PxyContainer, text=" ", bg="#333").grid(row=0, column=0, padx=10, sticky=W) # espace
+
+                Label(PxyContainer, text="Calcule de la quantité d'information mutuelle :", font=("Arial 18 bold underline"), bg="#333", fg="#fff", justify=LEFT).grid(row=1, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="Methode 1 :", font=("Arial 18 bold"), bg="#333", fg="#fff", justify=LEFT).grid(row=2, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="On utilise la formule : I(x,y) = P(x,y) * log2(P(x,y) / (P(x) * P(y)))", font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=3, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="===> I(X,Y) = "+str(Ixy), font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=4, column=0, padx=10, sticky=W)
+
+                Label(PxyContainer, text=" ", bg="#333").grid(row=5, column=0, padx=10, sticky=W) # espace
+                
+                Label(PxyContainer, text="Methode 2 :", font=("Arial 18 bold"), bg="#333", fg="#fff", justify=LEFT).grid(row=6, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="On utilise la formule de l'entropie : I(X,Y) = H(X) + H(Y) - H(X,Y)", font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=7, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="===> I(X,Y) = "+str(Ixy_H), font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=8, column=0, padx=10, sticky=W)
+
+
+
+
+
             elif btn == "Proba":
                 Qinfo_btn.configure(bg="#333", fg="#fff")
                 Proba_btn.configure(bg="#fff", fg="#333")
@@ -613,6 +711,30 @@ def show_BIG_TP1():
                 Qinfo_btn.configure(bg="#333", fg="#fff")
                 Proba_btn.configure(bg="#333", fg="#fff")
                 Entropie_btn.configure(bg="#fff", fg="#333")
+
+                Label(generalMainFrame, text="Calcule de L'entropie :", font=("Arial 22 bold underline"), bg="#333", fg="#fff", justify=LEFT).pack(fill=X,padx=10, pady=10)
+                PxPyContainer = Frame(generalMainFrame, bg="#333")
+                PxPyContainer.pack(fill=X, padx=10)
+                Label(PxPyContainer, text="Entropie des sources X et Y :", font=("Arial",16), bg="#333", fg="#fff").grid(row=0, column=0, sticky=W)
+                Label(PxPyContainer, text="H(X) = "+ str(Hx) + "   |   H(Y) = " + str(Hy), bg="#333", fg="#fff", padx=5, pady=5, font=("Arial",16)).grid(row=1, column=0, padx=0)
+                Label(PxPyContainer, text="H(X,Y) = " + str(Hxy), bg="#333", fg="#fff", padx=5, pady=5, font=("Arial",16)).grid(row=2, column=0, padx=0)
+
+                PxyContainer = Frame(generalMainFrame, bg="#333")
+                PxyContainer.pack(fill=X, padx=5, pady=20)
+                Label(PxyContainer, text=" ", bg="#333").grid(row=0, column=0, padx=10, sticky=W) # espace
+
+                Label(PxyContainer, text="Calcule des entropies Conditionnelles :", font=("Arial 18 bold underline"), bg="#333", fg="#fff", justify=LEFT).grid(row=1, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="Methode 1 :", font=("Arial 18 bold"), bg="#333", fg="#fff", justify=LEFT).grid(row=2, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="On utilise la formule : H(X,Y) = P(x,y) * log2(P(x,y) / (P(x) * P(y)))", font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=3, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="===> H(X/Y) = "+str(Hxy), font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=4, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="===> H(Y/X) = "+str(Hxy), font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=5, column=0, padx=10, sticky=W)
+
+                Label(PxyContainer, text=" ", bg="#333").grid(row=6, column=0, padx=10, sticky=W) # espace
+                
+                Label(PxyContainer, text="Methode 2 :", font=("Arial 18 bold"), bg="#333", fg="#fff", justify=LEFT).grid(row=7, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="On utilise la formule de l'entropie : H(Y/X) = H(X,Y) - H(X)", font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=8, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="===> H(Y/X) = "+str(Hysx), font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=9, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="===> H(Y/X) = "+str(Hxsy), font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=10, column=0, padx=10, sticky=W)
 
 
 
