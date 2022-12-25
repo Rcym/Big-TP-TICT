@@ -585,8 +585,8 @@ def show_BIG_TP1():
                 PxPyContainer = Frame(generalMainFrame, bg="#333")
                 PxPyContainer.pack(fill=X, padx=10)
                 Label(PxPyContainer, text="Quantité d'information des sources X et Y :", font=("Arial",16), bg="#333", fg="#fff").grid(row=0, column=0, sticky=W)
-                Button(PxPyContainer, text="I(xi)", bg="#333", fg="#fff", bd=3, padx=5, pady=5, font=("Arial",16), command=showQinfoo("xi")).grid(row=0, column=1, padx=5)
-                Button(PxPyContainer, text="I(yj)", bg="#333", fg="#fff", bd=3, padx=5, pady=5, font=("Arial",16), command=showQinfoo("Yj")).grid(row=0, column=2, padx=5)
+                Button(PxPyContainer, text="I(xi)", bg="#333", fg="#fff", bd=3, padx=5, pady=5, font=("Arial",16), command=lambda: showQinfoo("Y")).grid(row=0, column=1, padx=5)
+                Button(PxPyContainer, text="I(yj)", bg="#333", fg="#fff", bd=3, padx=5, pady=5, font=("Arial",16), command=lambda: showQinfoo("X")).grid(row=0, column=2, padx=5)
 
                 PxyContainer = Frame(generalMainFrame, bg="#333")
                 PxyContainer.pack(fill=X, padx=5, pady=40)
