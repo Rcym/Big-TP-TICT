@@ -424,8 +424,8 @@ def show_BIG_TP1():
         Ix = QuantitéInformation(Px)
         Iy = QuantitéInformation(Py)
         
-        Hxsy = Hxy - Hx     # hnaaaa
-        Hysx = Hxy - Hy
+        Hxsy_H = Hxy - Hx     # hnaaaa
+        Hysx_H = Hxy - Hy
 
         # Creating Display Window TP1
         entryWindow.destroy()
