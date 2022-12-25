@@ -406,6 +406,9 @@ def show_BIG_TP1():
         global Hxsy
         global Ix
         global Iy
+        global Hysx_H
+        global Hxsy_H
+
 
         Pysx = ProbaCond(Pxy, Px, tailleSource_1, tailleSource_2, "ysx")
         Pxsy = ProbaCond(Pxy, Py, tailleSource_1, tailleSource_2, "xsy")
@@ -421,6 +424,8 @@ def show_BIG_TP1():
         Ix = QuantitéInformation(Px)
         Iy = QuantitéInformation(Py)
         
+        Hxsy = Hxy - Hx     # hnaaaa
+        Hysx = Hxy - Hy
 
         # Creating Display Window TP1
         entryWindow.destroy()
@@ -734,8 +739,8 @@ def show_BIG_TP1():
                 
                 Label(PxyContainer, text="Methode 2 :", font=("Arial 18 bold"), bg="#333", fg="#fff", justify=LEFT).grid(row=7, column=0, padx=10, sticky=W)
                 Label(PxyContainer, text="On utilise la formule de l'entropie : H(Y/X) = H(X,Y) - H(X)", font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=8, column=0, padx=10, sticky=W)
-                Label(PxyContainer, text="===> H(Y/X) = "+str(Hysx) + "(bits/symboles)", font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=9, column=0, padx=10, sticky=W)
-                Label(PxyContainer, text="===> H(X/Y) = "+str(Hxsy) + "(bits/symboles)", font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=10, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="===> H(Y/X) = "+str(Hysx_H) + "(bits/symboles)", font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=9, column=0, padx=10, sticky=W)
+                Label(PxyContainer, text="===> H(X/Y) = "+str(Hxsy_H) + "(bits/symboles)", font=("Arial 16"), bg="#333", fg="#fff", justify=LEFT).grid(row=10, column=0, padx=10, sticky=W)
 
 
 
