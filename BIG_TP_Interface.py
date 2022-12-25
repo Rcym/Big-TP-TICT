@@ -19,7 +19,10 @@ def EntropieConjointe(Proba_xy):
     Hxy = 0
     for i in range(0, len(Proba_xy)):
         for j in range(0, len(Proba_xy[i])):
-            Hxy += -(Proba_xy[i][j]) * math.log2(Proba_xy[i][j])
+            try:   
+                Hxy += -(Proba_xy[i][j]) * math.log2(Proba_xy[i][j])
+            except:
+                pass
     return round(Hxy, 3)
 
 # Fonction pour calculer la quantité d'information mutuelle
@@ -38,7 +41,10 @@ def EntropieConditionnelleX_Y(PY, P_XsY):
     Hcond = 0
     for i in range(0, ts1):
         for j in range(0, len(PY)):
-            Hcond += -(PY[j]) * (P_XsY[i][j]) * math.log2(P_XsY[i][j])
+            try: 
+                Hcond += -(PY[j]) * (P_XsY[i][j]) * math.log2(P_XsY[i][j])
+            except:
+                pass
     return round(Hcond, 3)
 
 def EntropieConditionnelleY_X(PX, P_YSX):
@@ -47,8 +53,10 @@ def EntropieConditionnelleY_X(PX, P_YSX):
     Hcond = 0
     for i in range(0, len(PX)):
         for j in range(0, ts2):
-            print(PX[i])
-            Hcond += -(PX[i]) * (P_YSX[i][j]) * math.log2(P_YSX[i][j])
+            try:  
+                Hcond += -(PX[i]) * (P_YSX[i][j]) * math.log2(P_YSX[i][j])
+            except:
+                pass
     return round(Hcond, 3)
 
 def ProbaCond(Pxy, Px, N1, N2, direction):
@@ -77,7 +85,10 @@ def QinformationMutuelle(Pxy, Px, Py):
     Ixy2 = 0
     for i in range(0, len(Px)):
         for j in range(0, len(Py)):
-            Ixy2 += (Pxy[i][j]) * math.log2((Pxy[i][j])/((Px[i])*(Py[j])))
+            try:
+                Ixy2 += (Pxy[i][j]) * math.log2((Pxy[i][j])/((Px[i])*(Py[j])))
+            except:
+                pass
     return round(Ixy2, 3)
 
 def erreurPopup(currentWindow):
@@ -190,7 +201,7 @@ def showPrefix():
                 Codes.append(elem[1].get())
                 Probas.append(Proba)
                 sommeProba += Proba
-            print(sommeProba)
+
             if sommeProba != 1:
                 errWindow = Toplevel(prefixWindow)
                 errWindow.configure(bg="red")
@@ -404,7 +415,6 @@ def show_BIG_TP1():
         for i in range(tailleSource_1):
             for j in range(tailleSource_2):
                 Pxy[i][j] = float(Pxy[i][j].get())
-        print(Pxy)
         
         # Calcul Px et Py
         Px = []
@@ -832,10 +842,14 @@ def show_BIG_TP1():
 
     
 
+menuElement2 = Button(root, text="BIG TP 1", font=("Arial 12 bold"), width=20, height=3, command=show_BIG_TP1).pack(pady=30)
+#menuElement3 = Button(root, text="BIG TP 2", font=("Arial", 12), width=20, height=3).pack(pady=30)
+menuElement3 = Button(root, text="Préfix", font=("Arial 12 bold"), width=20, height=3, command=showPrefix).pack(pady=30)
 
-menuElement2 = Button(root, text="BIG TP 1", font=("Arial", 12), width=20, height=3, command=show_BIG_TP1).pack(pady=30)
-menuElement3 = Button(root, text="BIG TP 2", font=("Arial", 12), width=20, height=3).pack(pady=30)
-menuElement3 = Button(root, text="Préfix", font=("Arial", 12), width=20, height=3, command=showPrefix).pack(pady=30)
-
+nomFrame = LabelFrame(root, bg="#222", padx=40)
+nomFrame.pack(pady=10)
+Label(nomFrame, text="Projet de : ", bg="#222", fg="#fff", font=("Arial 16 underline")).grid(row=0, column=0, pady=5)
+Label(nomFrame, text="- OuldHammouda Racym", bg="#222", fg="#fff", font=("Arial 18 bold")).grid(row=1, column=0, pady=5, sticky=W)
+Label(nomFrame, text="- Hannoun Amar Amine", bg="#222", fg="#fff", font=("Arial 18 bold")).grid(row=2, column=0, pady=5, sticky=W)
 
 root.mainloop()
