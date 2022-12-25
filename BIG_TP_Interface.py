@@ -238,7 +238,7 @@ def showPrefix():
                 # affichage des resultats
                 Label(resultWindow, text="La longueure moyenne R = " + str(round(R,2)) + " bits/symboles", font=("Arial",17)).pack(padx=10, pady=(10,5), fill=X)
                 Label(resultWindow, text="L'entropie H = " + str(round(H,2)) + " bits/symboles", font=("Arial",17)).pack(padx=10, fill= X)
-                Label(resultWindow, text="L'efficacité du code = " + str(round(H/R,2)) + " %", font=("Arial",18), bg="green").pack(padx=10, pady=15, fill=X)
+                Label(resultWindow, text="L'efficacité du code = " + str(round(H*100/R,2)) + " %", font=("Arial",18), bg="green").pack(padx=10, pady=15, fill=X)
 
             else:
                 print("Le code n'es pas un code préfix")
@@ -249,7 +249,7 @@ def showPrefix():
                 # affichage des resultats
                 Label(resultWindow, text="La longueure moyenne R = " + str(round(R,2)) + " bits/symboles", font=("Arial",17)).pack(padx=10, pady=(10,5), fill=X)
                 Label(resultWindow, text="L'entropie H = " + str(round(H,2)) + " bits/symboles", font=("Arial",17)).pack(padx=10, fill= X)
-                Label(resultWindow, text="L'efficacité du code = " + str(round(H/R,2)) + " %", font=("Arial",18), bg="green").pack(padx=10, pady=15, fill=X)
+                Label(resultWindow, text="L'efficacité du code = " + str(round(H*100/R,2)) + " %", font=("Arial",18), bg="green").pack(padx=10, pady=15, fill=X)
             
             
 
