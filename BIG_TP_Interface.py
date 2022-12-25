@@ -400,11 +400,11 @@ def show_BIG_TP1():
         for i in range(tailleSource_1):
             for j in range(tailleSource_2):
                 try:
-                    sommePxy += float(Pxy[i][j].get())
+                    sommePxy += float(Pxy[i][j].get())*100
                 except:
                     erreurPopup(entryWindow)
                     return
-        if sommePxy != 1:
+        if sommePxy/100 != 1:
             errWindow = Toplevel(entryWindow)
             errWindow.configure(bg="red")
             Label(errWindow, text="La somme des probabilité doit étre égale a 1", font=("Arial", 14)).pack(padx=8,pady=8)
