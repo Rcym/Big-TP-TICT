@@ -32,19 +32,24 @@ def QuantitéInfoMutuelle(Proba1, Proba2):
     return
 
 # Function pour calculer l'entropie conditionnelle
-def EntropieConditionnelle(PX, P_YSX, YXorXY):
-    if YXorXY == "YsX":
-        Hcond = 0
-        for i in range(0, len(PX)):
-            for j in range(0, len(P_YSX[i])):
-                Hcond += -(PX[i]) * (P_YSX[j][i]) * math.log2(P_YSX[j][i])
-        return round(Hcond, 3)
-    elif YXorXY == "XsY":
-        Hcond = 0
-        for i in range(0, len(PX)):
-            for j in range(0, len(P_YSX[i])):
-                Hcond += -(PX[i]) * (P_YSX[i][j]) * math.log2(P_YSX[i][j])
-        return round(Hcond, 3)
+def EntropieConditionnelleX_Y(PY, P_XsY):
+    global tailleSource_1
+    ts1 = tailleSource_1
+    Hcond = 0
+    for i in range(0, ts1):
+        for j in range(0, len(PY)):
+            Hcond += -(PY[j]) * (P_XsY[i][j]) * math.log2(P_XsY[i][j])
+    return round(Hcond, 3)
+
+def EntropieConditionnelleY_X(PX, P_YSX):
+    global tailleSource_2
+    ts2 = tailleSource_2
+    Hcond = 0
+    for i in range(0, len(PX)):
+        for j in range(0, ts2):
+            print(PX[i])
+            Hcond += -(PX[i]) * (P_YSX[i][j]) * math.log2(P_YSX[i][j])
+    return round(Hcond, 3)
 
 def ProbaCond(Pxy, Px, N1, N2, direction):
     if direction == "ysx":
@@ -415,8 +420,8 @@ def show_BIG_TP1():
         Hx = Entropie(Px)
         Hy = Entropie(Py)
         Hxy = EntropieConjointe(Pxy)
-        Hysx = EntropieConditionnelle(Px, Pysx, "YsX")
-        Hxsy = EntropieConditionnelle(Py, Pxsy, "XsY")
+        Hysx = EntropieConditionnelleY_X(Px, Pysx)
+        Hxsy = EntropieConditionnelleX_Y(Py, Pxsy)
 
         Ixy_H = round((Hx + Hy - Hxy), 3)
         Ixy = QinformationMutuelle(Pxy, Px, Py)
