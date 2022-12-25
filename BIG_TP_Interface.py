@@ -198,18 +198,36 @@ def showPrefix():
                 return
             
             # verification prefix
+            def calcR(codeList, probaList):
+                longueurMoyenne = 0
+                for i in range(len(codeList)):
+                    longueurMoyenne += float(probaList[i]) * len(codeList[i]) 
+                return longueurMoyenne
+
+            def calcH(probaList):
+                H = 0
+                for i in range(len(probaList)):
+                    H += float(probaList[i]) * math.log2(1/float(probaList[i]))
+                return H
+            R = calcR(Codes, Probas)
+            H = calcH(Probas)
             isPrefix = True
             for i in range(len(Codes)):
                 for j in range(len(Codes)):
                     if (i != j) and Codes[i].startswith(Codes[j]):
                         isPrefix = False
                         break
+            
             if isPrefix:
                 print("Le code est un préfix")
                 resultWindow = Toplevel(prefixWindow)
                 resultWindow.configure(bg="green")
                 Result = Label(resultWindow, text="Le code est un code préfix", font=("Arial",20), padx=10, pady=10)
                 Result.pack(padx=10, pady=10)
+                # affichage des resultats
+                Label(resultWindow, text="La longueure moyenne R = " + str(round(R,2)) + " bits/symboles", font=("Arial",17)).pack(padx=10, pady=(10,5), fill=X)
+                Label(resultWindow, text="L'entropie H = " + str(round(H,2)) + " bits/symboles", font=("Arial",17)).pack(padx=10, fill= X)
+                Label(resultWindow, text="L'efficacité du code = " + str(round(R/H,2)) + " %", font=("Arial",18), bg="green").pack(padx=10, pady=15, fill=X)
 
             else:
                 print("Le code n'es pas un code préfix")
@@ -217,7 +235,10 @@ def showPrefix():
                 resultWindow.configure(bg="red")
                 Result = Label(resultWindow, text="Le code n'est pas un code préfix", font=("Arial",20), padx=10, pady=10)
                 Result.pack(padx=10, pady=10)
-
+                # affichage des resultats
+                Label(resultWindow, text="La longueure moyenne R = " + str(round(R,2)) + " bits/symboles", font=("Arial",17)).pack(padx=10, pady=(10,5), fill=X)
+                Label(resultWindow, text="L'entropie H = " + str(round(H,2)) + " bits/symboles", font=("Arial",17)).pack(padx=10, fill= X)
+                Label(resultWindow, text="L'efficacité du code = " + str(round(R/H,2)) + " %", font=("Arial",18), bg="green").pack(padx=10, pady=15, fill=X)
             
             
 
